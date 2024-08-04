@@ -1,15 +1,13 @@
 use cliclack::log;
 use kaspa_consensus_core::tx::TransactionId;
-use kaspa_wallet_core::prelude::AccountsSendRequest;
 use kaspa_wallet_core::prelude::{
     AccountDescriptor, AccountId, ConnectRequest, Wallet as CoreWallet, WalletDescriptor,
 };
 use kaspa_wallet_core::rpc::RpcApi;
-use kaspa_wallet_core::tx::PaymentOutputs;
 use pad::{Alignment, PadStr};
-use sparkle_core::inscription::{
-    demo_keypair, deploy_token_demo, mint_token_demo, reveal_transaction, TransactionDetails,
-};
+// use sparkle_core::inscription::{
+//     demo_keypair, deploy_token_demo, mint_token_demo, TransactionDetails,
+// };
 use sparkle_rs::imports::*;
 use sparkle_rs::monitor::monitor;
 use sparkle_rs::result::Result;
@@ -187,154 +185,155 @@ impl Wallet {
         Ok(Self { wallet, account })
     }
 
-    #[cfg(not(target_arch = "wasm32"))]
-    pub async fn demo_deploy(&self) {
-        let (secret_key, public_key) = demo_keypair();
-        let (redeem_lock, script_sig) = deploy_token_demo(&public_key);
-        let p2sh = redeem_lock.clone();
-        self.commit_reveal_chain(p2sh, redeem_lock, script_sig, secret_key, FEE_DEPLOY)
-            .await;
-    }
+    // todo: commented out for migration to WalletAPI.
+    // #[cfg(not(target_arch = "wasm32"))]
+    // pub async fn demo_deploy(&self) {
+    //     let (secret_key, public_key) = demo_keypair();
+    //     let (redeem_lock, script_sig) = deploy_token_demo(&public_key);
+    //     let p2sh = redeem_lock.clone();
+    //     self.commit_reveal_chain(p2sh, redeem_lock, script_sig, secret_key, FEE_DEPLOY)
+    //         .await;
+    // }
 
-    #[cfg(not(target_arch = "wasm32"))]
-    pub async fn demo_mint(&self) {
-        let (secret_key, public_key) = demo_keypair();
-        let (redeem_lock, script_sig) = mint_token_demo(&public_key);
-        let p2sh: Address = redeem_lock.clone();
-        self.commit_reveal_chain(p2sh, redeem_lock, script_sig, secret_key, FEE_MINT)
-            .await;
-    }
+    // #[cfg(not(target_arch = "wasm32"))]
+    // pub async fn demo_mint(&self) {
+    //     let (secret_key, public_key) = demo_keypair();
+    //     let (redeem_lock, script_sig) = mint_token_demo(&public_key);
+    //     let p2sh: Address = redeem_lock.clone();
+    //     self.commit_reveal_chain(p2sh, redeem_lock, script_sig, secret_key, FEE_MINT)
+    //         .await;
+    // }
 
-    #[cfg(not(target_arch = "wasm32"))]
-    async fn commit_reveal_chain(
-        &self,
-        p2sh: Address,
-        redeem_lock: Address,
-        script_sig: Vec<u8>,
-        secret_key: secp256k1::SecretKey,
-        reveal_fee: u64,
-    ) {
-        let payback_amount = 10 * SOMPI_PER_KASPA;
-        let commit_fee = (SOMPI_PER_KASPA as f64 * 0.20) as u64;
-        let commit_total_amount = reveal_fee + payback_amount;
-        let account = self.account.clone().unwrap();
-        let recipient = account.receive_address.clone().unwrap();
-        println!("Destination address {}", recipient.clone());
+    // #[cfg(not(target_arch = "wasm32"))]
+    // async fn commit_reveal_chain(
+    //     &self,
+    //     p2sh: Address,
+    //     redeem_lock: Address,
+    //     script_sig: Vec<u8>,
+    //     secret_key: secp256k1::SecretKey,
+    //     reveal_fee: u64,
+    // ) {
+    //     let payback_amount = 10 * SOMPI_PER_KASPA;
+    //     let commit_fee = (SOMPI_PER_KASPA as f64 * 0.20) as u64;
+    //     let commit_total_amount = reveal_fee + payback_amount;
+    //     let account = self.account.clone().unwrap();
+    //     let recipient = account.receive_address.clone().unwrap();
+    //     println!("Destination address {}", recipient.clone());
 
-        let monitor_handle: JoinHandle<_> =
-            await_utxo_inclusion(p2sh, commit_total_amount, self.wallet.rpc_api());
+    //     let monitor_handle: JoinHandle<_> =
+    //         await_utxo_inclusion(p2sh, commit_total_amount, self.wallet.rpc_api());
 
-        let send_request = AccountsSendRequest {
-            account_id: account.account_id,
-            wallet_secret: "111".into(),
-            payment_secret: None,
-            destination: PaymentOutputs::from((redeem_lock, commit_total_amount)).into(),
-            priority_fee_sompi: commit_fee.into(),
-            payload: None,
-        };
-        let txsent = self
-            .wallet
-            .as_api()
-            .accounts_send(send_request)
-            .await
-            .unwrap();
+    //     let send_request = AccountsSendRequest {
+    //         account_id: account.account_id,
+    //         wallet_secret: "111".into(),
+    //         payment_secret: None,
+    //         destination: PaymentOutputs::from((redeem_lock, commit_total_amount)).into(),
+    //         priority_fee_sompi: commit_fee.into(),
+    //         payload: None,
+    //     };
+    //     let txsent = self
+    //         .wallet
+    //         .as_api()
+    //         .accounts_send(send_request)
+    //         .await
+    //         .unwrap();
 
-        let commit_txid = txsent.final_transaction_id().unwrap();
+    //     let commit_txid = txsent.final_transaction_id().unwrap();
 
-        // Wait for commit UTXO
-        match monitor_handle.await.unwrap() {
-            Ok(tid) => {
-                println!("Monitor task  01 completed successfully");
+    //     // Wait for commit UTXO
+    //     match monitor_handle.await.unwrap() {
+    //         Ok(tid) => {
+    //             println!("Monitor task  01 completed successfully");
 
-                assert!(commit_txid == tid);
+    //             assert!(commit_txid == tid);
 
-                // Assume latest transaction ID is commit transaction.
-                let txs = self
-                    .wallet
-                    .as_api()
-                    .transactions_data_get_range(
-                        account.account_id,
-                        self.wallet.network_id().unwrap(),
-                        0..10,
-                    )
-                    .await
-                    .unwrap();
+    //             // Assume latest transaction ID is commit transaction.
+    //             let txs = self
+    //                 .wallet
+    //                 .as_api()
+    //                 .transactions_data_get_range(
+    //                     account.account_id,
+    //                     self.wallet.network_id().unwrap(),
+    //                     0..10,
+    //                 )
+    //                 .await
+    //                 .unwrap();
 
-                let prev_tx: &Arc<kaspa_wallet_core::prelude::TransactionRecord> = txs
-                    .transactions
-                    .iter()
-                    .find(|&tx| tx.id == tid)
-                    .expect("Commit transaction");
+    //             let prev_tx: &Arc<kaspa_wallet_core::prelude::TransactionRecord> = txs
+    //                 .transactions
+    //                 .iter()
+    //                 .find(|&tx| tx.id == tid)
+    //                 .expect("Commit transaction");
 
-                // prev_tx.transaction_data.id()
-                println!("prev_tx tid {:?}", prev_tx.id);
-                println!("prev_tx daa score {:?}", prev_tx.block_daa_score);
+    //             // prev_tx.transaction_data.id()
+    //             println!("prev_tx tid {:?}", prev_tx.id);
+    //             println!("prev_tx daa score {:?}", prev_tx.block_daa_score);
 
-                let (transaction, _, _) = reveal_transaction(
-                    TransactionDetails {
-                        script_sig,
-                        recipient: recipient.clone(),
-                        secret_key,
-                        prev_tx_tid: prev_tx.id,
-                        prev_tx_score: prev_tx.block_daa_score,
-                    },
-                    payback_amount,
-                    reveal_fee,
-                    self.wallet.network_id().unwrap(),
-                );
+    //             let (transaction, _, _) = reveal_transaction(
+    //                 TransactionDetails {
+    //                     script_sig,
+    //                     recipient: recipient.clone(),
+    //                     secret_key,
+    //                     prev_tx_tid: prev_tx.id,
+    //                     prev_tx_score: prev_tx.block_daa_score,
+    //                 },
+    //                 payback_amount,
+    //                 reveal_fee,
+    //                 self.wallet.network_id().unwrap(),
+    //             );
 
-                let submitted_reveal_tid = self
-                    .wallet
-                    .rpc_api()
-                    .submit_transaction(transaction.rpc_transaction(), false)
-                    .await
-                    .expect("Reveal transaction submit");
+    //             let submitted_reveal_tid = self
+    //                 .wallet
+    //                 .rpc_api()
+    //                 .submit_transaction(transaction.rpc_transaction(), false)
+    //                 .await
+    //                 .expect("Reveal transaction submit");
 
-                println!("Reveal transaction submitted {:?}", submitted_reveal_tid);
+    //             println!("Reveal transaction submitted {:?}", submitted_reveal_tid);
 
-                println!();
-                let t = self
-                    .wallet
-                    .rpc_api()
-                    .get_mempool_entry(transaction.id(), false, false)
-                    .await;
-                println!("Mempool fetch {:?}", t);
-                println!();
+    //             println!();
+    //             let t = self
+    //                 .wallet
+    //                 .rpc_api()
+    //                 .get_mempool_entry(transaction.id(), false, false)
+    //                 .await;
+    //             println!("Mempool fetch {:?}", t);
+    //             println!();
 
-                let monitor_handle: JoinHandle<_> =
-                    await_utxo_inclusion(recipient, payback_amount, self.wallet.rpc_api());
+    //             let monitor_handle: JoinHandle<_> =
+    //                 await_utxo_inclusion(recipient, payback_amount, self.wallet.rpc_api());
 
-                match monitor_handle.await.unwrap() {
-                    Ok(reveal_tid) => {
-                        println!();
-                        println!("Monitor task 02 completed successfully");
+    //             match monitor_handle.await.unwrap() {
+    //                 Ok(reveal_tid) => {
+    //                     println!();
+    //                     println!("Monitor task 02 completed successfully");
 
-                        assert!(reveal_tid == submitted_reveal_tid);
+    //                     assert!(reveal_tid == submitted_reveal_tid);
 
-                        let txs = self
-                            .wallet
-                            .as_api()
-                            .transactions_data_get_range(
-                                account.account_id,
-                                self.wallet.network_id().unwrap(),
-                                0..10,
-                            )
-                            .await
-                            .unwrap();
-                        let reveal_tx: &Arc<kaspa_wallet_core::prelude::TransactionRecord> = txs
-                            .transactions
-                            .iter()
-                            .find(|&tx| tx.id == reveal_tid)
-                            .expect("Reveal transaction");
+    //                     let txs = self
+    //                         .wallet
+    //                         .as_api()
+    //                         .transactions_data_get_range(
+    //                             account.account_id,
+    //                             self.wallet.network_id().unwrap(),
+    //                             0..10,
+    //                         )
+    //                         .await
+    //                         .unwrap();
+    //                     let reveal_tx: &Arc<kaspa_wallet_core::prelude::TransactionRecord> = txs
+    //                         .transactions
+    //                         .iter()
+    //                         .find(|&tx| tx.id == reveal_tid)
+    //                         .expect("Reveal transaction");
 
-                        println!("reveal tx {:?}", reveal_tx);
-                    }
-                    Err(e) => eprintln!("Monitor task failed: {:?}", e),
-                }
-            }
-            Err(e) => eprintln!("Monitor task failed: {:?}", e),
-        }
-    }
+    //                     println!("reveal tx {:?}", reveal_tx);
+    //                 }
+    //                 Err(e) => eprintln!("Monitor task failed: {:?}", e),
+    //             }
+    //         }
+    //         Err(e) => eprintln!("Monitor task failed: {:?}", e),
+    //     }
+    // }
 }
 
 async fn query_utxo_presence(
