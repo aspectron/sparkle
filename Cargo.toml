@@ -82,6 +82,7 @@ kaspa-wasm = { path = "../rusty-kaspa/wasm" }
 kaspa-wasm-core = { path = "../rusty-kaspa/wasm/core" }
 kaspa-wrpc-client = { path = "../rusty-kaspa/rpc/wrpc/client" }
 kaspa-wrpc-wasm = { path = "../rusty-kaspa/rpc/wrpc/wasm" }
+kaspa-wallet-pskt = { path = "../rusty-kaspa/wallet/pskt" }
 
 # kaspa-addresses = { git = "https://github.com/aspectron/rusty-kaspa.git", branch = "sparkle" }
 # kaspa-bip32 = { git = "https://github.com/aspectron/rusty-kaspa.git", branch = "sparkle" }
@@ -99,6 +100,7 @@ kaspa-wrpc-wasm = { path = "../rusty-kaspa/rpc/wrpc/wasm" }
 # kaspa-wasm-core = { git = "https://github.com/aspectron/rusty-kaspa.git", branch = "sparkle" }
 # kaspa-wrpc-client = { git = "https://github.com/aspectron/rusty-kaspa.git", branch = "sparkle" }
 # kaspa-wrpc-wasm = { git = "https://github.com/aspectron/rusty-kaspa.git", branch = "sparkle" }
+# kaspa-wallet-pskt = { git = "https://github.com/aspectron/rusty-kaspa.git", branch = "sparkle" }
 
 # _________________________________________________________
 #  _ _ _ ____ ____ _  _ ____ _    ____ _ _ _    ____ ____ 
