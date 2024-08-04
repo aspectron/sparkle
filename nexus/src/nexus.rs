@@ -52,11 +52,15 @@ impl Nexus {
         println!("PROCESSOR init done...");
 
         // for now use the default public node infrastructure
-        let resolver = Resolver::default();
+        let (resolver, url) = if let Some(url) = url {
+            (None, Some(url))
+        } else {
+            (Some(Resolver::default()), url)
+        };
         let rpc_client = Arc::new(KaspaRpcClient::new_with_args(
             WrpcEncoding::Borsh,
             url,
-            Some(resolver),
+            resolver,
             Some(network_id),
             None,
         )?);

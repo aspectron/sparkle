@@ -53,6 +53,7 @@ sparkle-macros = { path = "macros" }
 # kaspa-addresses = "0.13.4"
 # kaspa-bip32 = "0.13.4"
 # kaspa-consensus-core = "0.13.4"
+# kaspa-consensus-client = "0.13.4"
 # kaspa-consensus-wasm = "0.13.4"
 # kaspa-hashes = "0.13.4"
 # kaspa-notify = "0.13.4"
@@ -65,42 +66,43 @@ sparkle-macros = { path = "macros" }
 # kaspa-wrpc-client = "0.13.4"
 # kaspa-wrpc-wasm = "0.13.4"
 
-kaspa-addresses = { path = "../rusty-kaspa/crypto/addresses" }
-kaspa-bip32 = { path = "../rusty-kaspa/wallet/bip32" }
-kaspa-consensus-core = { path = "../rusty-kaspa/consensus/core" }
-kaspa-consensus-client = { path = "../rusty-kaspa/consensus/client" }
-kaspa-consensus-wasm = { path = "../rusty-kaspa/consensus/wasm" }
-kaspa-hashes = { path = "../rusty-kaspa/crypto/hashes" }
-kaspa-notify = { path = "../rusty-kaspa/notify" }
-kaspa-rpc-core = { path = "../rusty-kaspa/rpc/core" }
-kaspa-txscript = { path = "../rusty-kaspa/crypto/txscript" }
-kaspa-txscript-errors = { path = "../rusty-kaspa/crypto/txscript/errors" }
-kaspa-utils = { path = "../rusty-kaspa/utils" }
-kaspa-wallet-core = { path = "../rusty-kaspa/wallet/core" }
-kaspa-wallet-keys = { path = "../rusty-kaspa/wallet/keys" }
-kaspa-wasm = { path = "../rusty-kaspa/wasm" }
-kaspa-wasm-core = { path = "../rusty-kaspa/wasm/core" }
-kaspa-wrpc-client = { path = "../rusty-kaspa/rpc/wrpc/client" }
-kaspa-wrpc-wasm = { path = "../rusty-kaspa/rpc/wrpc/wasm" }
-kaspa-wallet-pskt = { path = "../rusty-kaspa/wallet/pskt" }
+# kaspa-addresses = { path = "../rusty-kaspa/crypto/addresses" }
+# kaspa-bip32 = { path = "../rusty-kaspa/wallet/bip32" }
+# kaspa-consensus-core = { path = "../rusty-kaspa/consensus/core" }
+# kaspa-consensus-client = { path = "../rusty-kaspa/consensus/client" }
+# kaspa-consensus-wasm = { path = "../rusty-kaspa/consensus/wasm" }
+# kaspa-hashes = { path = "../rusty-kaspa/crypto/hashes" }
+# kaspa-notify = { path = "../rusty-kaspa/notify" }
+# kaspa-rpc-core = { path = "../rusty-kaspa/rpc/core" }
+# kaspa-txscript = { path = "../rusty-kaspa/crypto/txscript" }
+# kaspa-txscript-errors = { path = "../rusty-kaspa/crypto/txscript/errors" }
+# kaspa-utils = { path = "../rusty-kaspa/utils" }
+# kaspa-wallet-core = { path = "../rusty-kaspa/wallet/core" }
+# kaspa-wallet-keys = { path = "../rusty-kaspa/wallet/keys" }
+# kaspa-wasm = { path = "../rusty-kaspa/wasm" }
+# kaspa-wasm-core = { path = "../rusty-kaspa/wasm/core" }
+# kaspa-wrpc-client = { path = "../rusty-kaspa/rpc/wrpc/client" }
+# kaspa-wrpc-wasm = { path = "../rusty-kaspa/rpc/wrpc/wasm" }
+# kaspa-wallet-pskt = { path = "../rusty-kaspa/wallet/pskt" }
 
-# kaspa-addresses = { git = "https://github.com/aspectron/rusty-kaspa.git", branch = "sparkle" }
-# kaspa-bip32 = { git = "https://github.com/aspectron/rusty-kaspa.git", branch = "sparkle" }
-# kaspa-consensus-core = { git = "https://github.com/aspectron/rusty-kaspa.git", branch = "sparkle" }
-# kaspa-consensus-wasm = { git = "https://github.com/aspectron/rusty-kaspa.git", branch = "sparkle" }
-# kaspa-hashes = { git = "https://github.com/aspectron/rusty-kaspa.git", branch = "sparkle" }
-# kaspa-notify = { git = "https://github.com/aspectron/rusty-kaspa.git", branch = "sparkle" }
-# kaspa-rpc-core = { git = "https://github.com/aspectron/rusty-kaspa.git", branch = "sparkle" }
-# kaspa-txscript = { git = "https://github.com/aspectron/rusty-kaspa.git", branch = "sparkle" }
-# kaspa-txscript-errors = { git = "https://github.com/aspectron/rusty-kaspa.git", branch = "sparkle" }
-# kaspa-utils = { git = "https://github.com/aspectron/rusty-kaspa.git", branch = "sparkle" }
-# kaspa-wallet-core = { git = "https://github.com/aspectron/rusty-kaspa.git", branch = "sparkle" }
-# kaspa-wallet-keys = { git = "https://github.com/aspectron/rusty-kaspa.git", branch = "sparkle" }
-# kaspa-wasm = { git = "https://github.com/aspectron/rusty-kaspa.git", branch = "sparkle" }
-# kaspa-wasm-core = { git = "https://github.com/aspectron/rusty-kaspa.git", branch = "sparkle" }
-# kaspa-wrpc-client = { git = "https://github.com/aspectron/rusty-kaspa.git", branch = "sparkle" }
-# kaspa-wrpc-wasm = { git = "https://github.com/aspectron/rusty-kaspa.git", branch = "sparkle" }
-# kaspa-wallet-pskt = { git = "https://github.com/aspectron/rusty-kaspa.git", branch = "sparkle" }
+kaspa-addresses = { git = "https://github.com/aspectron/rusty-kaspa.git", branch = "omega" }
+kaspa-bip32 = { git = "https://github.com/aspectron/rusty-kaspa.git", branch = "omega" }
+kaspa-consensus-core = { git = "https://github.com/aspectron/rusty-kaspa.git", branch = "omega" }
+kaspa-consensus-client = { git = "https://github.com/aspectron/rusty-kaspa.git", branch = "omega" }
+kaspa-consensus-wasm = { git = "https://github.com/aspectron/rusty-kaspa.git", branch = "omega" }
+kaspa-hashes = { git = "https://github.com/aspectron/rusty-kaspa.git", branch = "omega" }
+kaspa-notify = { git = "https://github.com/aspectron/rusty-kaspa.git", branch = "omega" }
+kaspa-rpc-core = { git = "https://github.com/aspectron/rusty-kaspa.git", branch = "omega" }
+kaspa-txscript = { git = "https://github.com/aspectron/rusty-kaspa.git", branch = "omega" }
+kaspa-txscript-errors = { git = "https://github.com/aspectron/rusty-kaspa.git", branch = "omega" }
+kaspa-utils = { git = "https://github.com/aspectron/rusty-kaspa.git", branch = "omega" }
+kaspa-wallet-core = { git = "https://github.com/aspectron/rusty-kaspa.git", branch = "omega" }
+kaspa-wallet-keys = { git = "https://github.com/aspectron/rusty-kaspa.git", branch = "omega" }
+kaspa-wasm = { git = "https://github.com/aspectron/rusty-kaspa.git", branch = "omega" }
+kaspa-wasm-core = { git = "https://github.com/aspectron/rusty-kaspa.git", branch = "omega" }
+kaspa-wrpc-client = { git = "https://github.com/aspectron/rusty-kaspa.git", branch = "omega" }
+kaspa-wrpc-wasm = { git = "https://github.com/aspectron/rusty-kaspa.git", branch = "omega" }
+kaspa-wallet-pskt = { git = "https://github.com/aspectron/rusty-kaspa.git", branch = "omega" }
 
 # _________________________________________________________
 #  _ _ _ ____ ____ _  _ ____ _    ____ _ _ _    ____ ____ 
@@ -108,12 +110,12 @@ kaspa-wallet-pskt = { path = "../rusty-kaspa/wallet/pskt" }
 #  |_|_| |__| |  \ | \_ |    |___ |__| |_|_|    |  \ ___] 
 # _________________________________________________________
 
-workflow-core = "0.14.0"
-workflow-http = "0.14.0"
-workflow-log = "0.14.0"
-workflow-wasm = "0.14.0"
-workflow-rpc = "0.14.0"
-workflow-serializer = "0.14.0"
+workflow-core = "0.15.0"
+workflow-http = "0.15.0"
+workflow-log = "0.15.0"
+workflow-wasm = "0.15.0"
+workflow-rpc = "0.15.0"
+workflow-serializer = "0.15.0"
 
 # workflow-core = { path = "../workflow-rs/core" }
 # workflow-http = { path = "../workflow-rs/http" }

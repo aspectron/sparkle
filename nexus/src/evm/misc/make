@@ -1,4 +1,0 @@
-#!/bin/bash
-
-solc --overwrite --evm-version=london --abi --bin simple-storage.sol -o build
-# solc --overwrite --evm-version=london --asm --gas --abi --bin simple-storage.sol -o build

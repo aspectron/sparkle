@@ -45,4 +45,4 @@ workflow-rpc.workspace = true
 workflow-wasm.workspace = true
 
 [lints.clippy]
-workspace = true
+empty_docs = "allow"

@@ -11,7 +11,6 @@ cfg_if::cfg_if! {
         pub mod result;
         pub mod processor;
         pub mod utils;
-        pub mod evm;
 
         pub mod prelude {
             pub use crate::nexus::Nexus;
